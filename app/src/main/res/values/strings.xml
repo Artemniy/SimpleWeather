@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Weather</string>
+    <string name="app_name">Simple Weather</string>
     <string name="weather_api_key">a48b7b3fc1023f4ac6bd0ff21e8ef693</string>
     <string name="enter_your_city">Enter your city</string>
     <string name="feels_like">Feels like %s°C</string>

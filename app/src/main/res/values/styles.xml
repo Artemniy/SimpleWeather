@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ShadowedText" parent="Widget.AppCompat.TextView">
+        <item name="android:shadowColor">@color/shadow_color</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+    <style name="ShadowedEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:shadowColor">@color/shadow_color</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+</resources>

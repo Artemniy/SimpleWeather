@@ -2,12 +2,13 @@
     <string name="app_name">Simple Weather</string>
     <string name="weather_api_key">a48b7b3fc1023f4ac6bd0ff21e8ef693</string>
     <string name="enter_your_city">Enter your city</string>
-    <string name="feels_like">Feels like %s°C</string>
-    <string name="celsius">%s°C</string>
+    <string name="feels_like">Feels like %d°C</string>
+    <string name="celsius">%d°C</string>
     <string name="humidity">Humidity: %d%%</string>
     <string name="pressure">%dhPa</string>
     <string name="visibility">%.2f km</string>
     <string name="no_results">No results</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="no_inet_connection">No internet connection</string>
+    <string name="now">Now</string>
 </resources>

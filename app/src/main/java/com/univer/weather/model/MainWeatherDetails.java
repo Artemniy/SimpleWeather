@@ -13,12 +13,12 @@ public class MainWeatherDetails {
     private int pressure;
     private int humidity;
 
-    public float getTemp() {
-        return temp;
+    public int getTemp() {
+        return (int) temp;
     }
 
-    public float getFeelsLike() {
-        return feelsLike;
+    public int getFeelsLike() {
+        return (int) feelsLike;
     }
 
     public float getTempMin() {

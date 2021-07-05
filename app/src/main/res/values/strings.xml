@@ -11,4 +11,9 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="no_inet_connection">No internet connection</string>
     <string name="now">Now</string>
+    <string name="developer_mail">Shyposha.A.A@nmu.one</string>
+    <string name="simpleweather_git">Artemniy/SimpleWeather.git</string>
+    <string name="simple_weather">Simple weather</string>
+    <string name="send_email">Send Email...</string>
+    <string name="no_apps_can_do_action">No apps can perform this action.</string>
 </resources>

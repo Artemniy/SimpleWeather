@@ -1,4 +1,4 @@
-package com.univer.weather;
+package com.univer.weather.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.univer.weather.R;
 import com.univer.weather.network.response.WeatherResponse;
 import com.univer.weather.util.ImageUtil;
 

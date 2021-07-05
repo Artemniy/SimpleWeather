@@ -1,4 +1,4 @@
-package com.univer.weather;
+package com.univer.weather.ui;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.univer.weather.Presenter;
+import com.univer.weather.PresenterView;
+import com.univer.weather.R;
 import com.univer.weather.network.response.CitiesResponse;
 import com.univer.weather.network.response.ForecastResponse;
 import com.univer.weather.network.response.WeatherResponse;
@@ -28,7 +31,7 @@ import com.univer.weather.util.Weather;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, PresenterView {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, PresenterView {
 
     private static final int LONDON_ID = 2643743;
 
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TextView description;
     private TextView humidity;
     private ImageView weatherImage;
+    private ImageButton about;
 
     private final Presenter presenter = new Presenter();
 
@@ -65,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private void initViews() {
         srLayout = findViewById(R.id.sr_layout);
         cityEt = findViewById(R.id.city_et);
+        about = findViewById(R.id.about);
+        about.setOnClickListener(this);
         search = findViewById(R.id.search);
         dailyForecastContainer = findViewById(R.id.daily_forecast_container);
         hourlyForecastRecycler = findViewById(R.id.hourly_forecast_recycler);
@@ -82,10 +88,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void initCitiesSearcher() {
-        search.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(cityEt.getText())) return;
-            loadCitiesList();
-        });
+        search.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == search.getId()) {
+            if (!TextUtils.isEmpty(cityEt.getText())) {
+                loadCitiesList();
+            }
+        } else if (view.getId() == about.getId()) {
+            new DialogAbout().show(getSupportFragmentManager(), DialogAbout.class.getSimpleName());
+        }
     }
 
     private void loadCitiesList() {
@@ -236,4 +251,5 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         srLayout.setRefreshing(false);
         showMessage(message);
     }
+
 }

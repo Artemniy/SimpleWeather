@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="30dp">
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_small"
+        android:src="@drawable/ic_close" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/simple_weather"
+        android:textColor="@color/dark_text_color"
+        android:textSize="@dimen/text_size_17" />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="v1.01"
+        android:textColor="@color/dark_text_color"
+        android:textSize="@dimen/text_size_17" />
+
+    <TextView
+        android:id="@+id/developer_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:paddingVertical="5dp"
+        android:text="@string/developer_mail"
+        android:textColor="@color/dark_text_color"
+        android:textSize="@dimen/text_size_17"
+        app:drawableStartCompat="@drawable/ic_email" />
+
+    <TextView
+        android:id="@+id/github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:drawablePadding="15dp"
+        android:gravity="center"
+        android:paddingVertical="5dp"
+        android:text="@string/simpleweather_git"
+        android:textColor="@color/dark_text_color"
+        android:textSize="@dimen/text_size_17"
+        app:drawableStartCompat="@drawable/ic_github" />
+</LinearLayout>

@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.univer.weather.Presenter;
 import com.univer.weather.PresenterView;
 import com.univer.weather.R;
+import com.univer.weather.model.DailyWeather;
 import com.univer.weather.network.response.CitiesResponse;
 import com.univer.weather.network.response.ForecastResponse;
 import com.univer.weather.network.response.WeatherResponse;
@@ -138,15 +139,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         presenter.loadWeatherByCityId(getString(R.string.weather_api_key), cityId);
     }
 
-    private void loadCityForecast(long cityId) {
+    private void loadCityForecast(double lat, double lon) {
         if (!NetworkStatusUtil.isInternetAvailable(this)) {
             showMessage(getString(R.string.no_inet_connection));
             return;
         }
 
-        if (cityId == 0) return;
+        if (lat == 0 || lon == 0) return;
         srLayout.setRefreshing(true);
-        presenter.loadForecastByCityId(getString(R.string.weather_api_key), cityId);
+        presenter.loadForecastByCityId(getString(R.string.weather_api_key), lat, lon);
     }
 
     private void processWeatherResult(WeatherResponse weatherResponse) {
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SharedPreferencesUtil.setLastEnteredCityId(weatherResponse.getId());
             processWeatherResult(weatherResponse);
             srLayout.setRefreshing(false);
-            loadCityForecast(weatherResponse.getId());
+            loadCityForecast(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
         } else {
             onErrorLoading(weatherResponse == null ? getString(R.string.something_went_wrong) : weatherResponse.getMessage());
         }
@@ -224,25 +225,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onForecastLoaded(ForecastResponse forecastResponse) {
         srLayout.setRefreshing(false);
-        ArrayList<WeatherResponse> forecasts = forecastResponse.getList();
-        hourlyForecastRecycler.setAdapter(new HourlyForecastAdapter(forecastResponse.getList()));
+        hourlyForecastRecycler.setAdapter(new HourlyForecastAdapter(forecastResponse.getHourly()));
 
         dailyForecastContainer.removeAllViews();
-        for (WeatherResponse forecast : forecasts) {
-            if (!forecast.isToday() && forecast.isMiddleOfDay()) {
-                addDailyForecast(forecast);
-            }
+        for (DailyWeather forecast : forecastResponse.getDaily()) {
+            addDailyForecast(forecast);
         }
     }
 
-    private void addDailyForecast(WeatherResponse forecast) {
+    private void addDailyForecast(DailyWeather forecast) {
         View view = getLayoutInflater().inflate(R.layout.item_daily_forecast, dailyForecastContainer, false);
         TextView weekDay = view.findViewById(R.id.week_day);
         ImageView icon = view.findViewById(R.id.weather_icon);
         TextView temp = view.findViewById(R.id.temp);
-        temp.setText(String.format(getString(R.string.celsius), forecast.getMain().getTemp()));
+        temp.setText(String.format(getString(R.string.celsius), forecast.getTemp()));
         weekDay.setText(forecast.getWeekDay());
-        ImageUtil.loadIcon(forecast.getWeather().getIcon(), icon);
+        ImageUtil.loadIcon(forecast.getWeather().get(0).getIcon(), icon);
         dailyForecastContainer.addView(view);
     }
 

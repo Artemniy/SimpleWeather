@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.univer.weather.R;
+import com.univer.weather.model.HourlyWeather;
 import com.univer.weather.network.response.WeatherResponse;
 import com.univer.weather.util.ImageUtil;
 
@@ -18,10 +19,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAdapter.ViewHolder> {
-    private ArrayList<WeatherResponse> forecasts;
-    private boolean daily;
+    private ArrayList<HourlyWeather> forecasts;
 
-    public HourlyForecastAdapter(ArrayList<WeatherResponse> forecasts) {
+    public HourlyForecastAdapter(ArrayList<HourlyWeather> forecasts) {
         this.forecasts = forecasts;
     }
 
@@ -34,17 +34,17 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        WeatherResponse forecast = forecasts.get(position);
+        HourlyWeather forecast = forecasts.get(position);
         holder.temp.setText(String.format(holder.itemView.getContext().getString(R.string.celsius),
-                forecast.getMain().getTemp()));
-        ImageUtil.loadIcon(forecast.getWeather().getIcon(), holder.icon);
+                forecast.getTemp()));
+        ImageUtil.loadIcon(forecast.getWeather().get(0).getIcon(), holder.icon);
         holder.time.setText(forecast.isNow() ? holder.itemView.getContext().getString(R.string.now)
                 : forecast.getTime());
     }
 
     @Override
     public int getItemCount() {
-        return Math.min(forecasts.size(), 9);
+        return forecasts.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

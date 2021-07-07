@@ -15,6 +15,9 @@ public interface ApiInterface {
     @GET("find?units=metric")
     Call<CitiesResponse> findCity(@Query("appid") String apiKey, @Query("q") String city);
 
-    @GET("forecast?units=metric")
+    /*@GET("forecast?units=metric")
     Call<ForecastResponse> getForecast(@Query("appid") String apiKey, @Query("id") long cityId);
+*/
+    @GET("onecall?units=metric&exclude=minutely")
+    Call<ForecastResponse> getForecast(@Query("appid") String apiKey, @Query("lat") double lat, @Query("lon") double lon);
 }

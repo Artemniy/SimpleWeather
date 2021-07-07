@@ -25,6 +25,7 @@ public class WeatherResponse extends BaseResponse {
     private Sys sys;
     private int visibility;
     private int id;
+    private float temp;
     @SerializedName("dt_txt")
     private String date;
 
@@ -34,6 +35,10 @@ public class WeatherResponse extends BaseResponse {
 
     public String getDate() {
         return date;
+    }
+
+    public float getTemp() {
+        return temp;
     }
 
     public boolean isNow() {

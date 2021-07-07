@@ -35,8 +35,8 @@ public class Presenter {
                 });
     }
 
-    public void loadForecastByCityId(String apiKey, long cityId) {
-        ApiClient.getApiService().getForecast(apiKey, cityId)
+    public void loadForecastByCityId(String apiKey, double lat, double lon) {
+        ApiClient.getApiService().getForecast(apiKey, lat, lon)
                 .enqueue(new Callback<ForecastResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<ForecastResponse> call, @NotNull Response<ForecastResponse> response) {

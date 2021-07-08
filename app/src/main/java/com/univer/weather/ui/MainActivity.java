@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.univer.weather.Presenter;
 import com.univer.weather.PresenterView;
 import com.univer.weather.R;
+import com.univer.weather.model.Coordinates;
 import com.univer.weather.model.DailyWeather;
 import com.univer.weather.network.response.CitiesResponse;
 import com.univer.weather.network.response.ForecastResponse;
@@ -33,8 +34,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, PresenterView {
-
-    private static final int LONDON_ID = 2643743;
 
     private EditText cityEt;
     private TextView city;
@@ -62,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferencesUtil.initSharedPreferences(this);
         initViews();
         srLayout.setOnRefreshListener(this);
-        loadWeatherByCityId(SharedPreferencesUtil.getLastEnteredCityId() == 0
-                ? LONDON_ID : SharedPreferencesUtil.getLastEnteredCityId());
+        onRefresh();
         initCitiesSearcher();
     }
 
@@ -123,20 +121,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder b = new AlertDialog.Builder(this);
         b.setItems(results, (dialog, which) -> {
             dialog.dismiss();
-            loadWeatherByCityId(responseArrayList.get(which).getId());
+            Coordinates coord = responseArrayList.get(which).getCoord();
+            SharedPreferencesUtil.setSavedCityLat((float) coord.getLat());
+            SharedPreferencesUtil.setSavedCityLon((float) coord.getLon());
+            SharedPreferencesUtil.setSavedCityName(String.format("%s, %s",
+                    responseArrayList.get(which).getName(),
+                    responseArrayList.get(which).getSys().getCountry()));
+            loadCityForecast(coord.getLat(), coord.getLon());
         });
         b.show();
-    }
-
-    private void loadWeatherByCityId(long cityId) {
-        if (!NetworkStatusUtil.isInternetAvailable(this)) {
-            showMessage(getString(R.string.no_inet_connection));
-            return;
-        }
-
-        if (cityId == 0) return;
-        srLayout.setRefreshing(true);
-        presenter.loadWeatherByCityId(getString(R.string.weather_api_key), cityId);
     }
 
     private void loadCityForecast(double lat, double lon) {
@@ -146,22 +139,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (lat == 0 || lon == 0) return;
+
         srLayout.setRefreshing(true);
-        presenter.loadForecastByCityId(getString(R.string.weather_api_key), lat, lon);
+        presenter.loadForecastByCoord(getString(R.string.weather_api_key), lat, lon);
     }
 
-    private void processWeatherResult(WeatherResponse weatherResponse) {
-        ImageUtil.loadIcon(weatherResponse.getWeather().getIcon(), weatherImage);
-        city.setText(String.format("%s, %s", weatherResponse.getName(), weatherResponse.getSys().getCountry()));
-        visibility.setText(String.format(Locale.getDefault(), getString(R.string.visibility), weatherResponse.getVisibility() / 1000f));
-        feelsLike.setText(String.format(getString(R.string.feels_like), weatherResponse.getMain().getFeelsLike()));
-        temp.setText(String.format(getString(R.string.celsius), weatherResponse.getMain().getTemp()));
-        humidity.setText(String.format(Locale.getDefault(), getString(R.string.humidity), weatherResponse.getMain().getHumidity()));
-        pressure.setText(String.format(Locale.getDefault(), getString(R.string.pressure), weatherResponse.getMain().getPressure()));
-        description.setText(weatherResponse.getWeather().getDescription());
+    private void processWeatherResult(ForecastResponse response) {
+        ImageUtil.loadIcon(response.getCurrent().getWeather().getIcon(), weatherImage);
+        city.setText(SharedPreferencesUtil.getSavedCityName());
+        visibility.setText(String.format(Locale.getDefault(), getString(R.string.visibility), response.getCurrent().getVisibility() / 1000f));
+        feelsLike.setText(String.format(getString(R.string.feels_like), response.getCurrent().getFeelsLike()));
+        temp.setText(String.format(getString(R.string.celsius), response.getCurrent().getTemp()));
+        humidity.setText(String.format(Locale.getDefault(), getString(R.string.humidity), response.getCurrent().getHumidity()));
+        pressure.setText(String.format(Locale.getDefault(), getString(R.string.pressure), response.getCurrent().getPressure()));
+        description.setText(response.getCurrent().getWeather().getDescription());
         wind.setText(String.format(Locale.getDefault(),
-                "%.2fm/s", weatherResponse.getWind().getSpeed()));
-        setBackgroundByWeather(weatherResponse.getWeather().getDescription());
+                "%.2fm/s", response.getCurrent().getWindSpeed()));
+        setBackgroundByWeather(response.getCurrent().getWeather().getDescription());
     }
 
     private void setBackgroundByWeather(String description) {
@@ -196,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRefresh() {
-        loadWeatherByCityId(SharedPreferencesUtil.getLastEnteredCityId());
+        loadCityForecast(SharedPreferencesUtil.getSavedCityLat(), SharedPreferencesUtil.getSavedCityLon());
     }
 
     @Override
@@ -210,26 +204,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onWeatherLoaded(WeatherResponse weatherResponse) {
-        srLayout.setRefreshing(false);
-        if (weatherResponse != null && weatherResponse.isSuccess()) {
-            SharedPreferencesUtil.setLastEnteredCityId(weatherResponse.getId());
-            processWeatherResult(weatherResponse);
-            srLayout.setRefreshing(false);
-            loadCityForecast(weatherResponse.getCoord().getLat(), weatherResponse.getCoord().getLon());
-        } else {
-            onErrorLoading(weatherResponse == null ? getString(R.string.something_went_wrong) : weatherResponse.getMessage());
-        }
-    }
-
-    @Override
     public void onForecastLoaded(ForecastResponse forecastResponse) {
         srLayout.setRefreshing(false);
-        hourlyForecastRecycler.setAdapter(new HourlyForecastAdapter(forecastResponse.getHourly()));
+        if (forecastResponse != null) {
+            processWeatherResult(forecastResponse);
+            srLayout.setRefreshing(false);
 
-        dailyForecastContainer.removeAllViews();
-        for (DailyWeather forecast : forecastResponse.getDaily()) {
-            addDailyForecast(forecast);
+            SharedPreferencesUtil.setSavedCityLat((float) forecastResponse.getLat());
+            SharedPreferencesUtil.setSavedCityLon((float) forecastResponse.getLon());
+
+            hourlyForecastRecycler.setAdapter(new HourlyForecastAdapter(forecastResponse.getHourly()));
+            dailyForecastContainer.removeAllViews();
+            for (DailyWeather forecast : forecastResponse.getDaily()) {
+                addDailyForecast(forecast);
+            }
+        } else {
+            onErrorLoading(getString(R.string.something_went_wrong));
         }
     }
 

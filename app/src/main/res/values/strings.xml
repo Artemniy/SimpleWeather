@@ -4,7 +4,7 @@
     <string name="enter_your_city">Enter your city</string>
     <string name="feels_like">Feels like %d°C</string>
     <string name="celsius">%d°C</string>
-    <string name="humidity">Humidity: %d%%</string>
+    <string name="humidity">%d%%</string>
     <string name="pressure">%dhPa</string>
     <string name="visibility">%.2f km</string>
     <string name="no_results">No results</string>

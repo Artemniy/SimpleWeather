@@ -10,8 +10,8 @@ public class DailyWeather {
     private ArrayList<Weather> weather;
     private long dt;
 
-    public int getTemp() {
-        return (int) temp.getDay();
+    public Temp getTemp() {
+        return temp;
     }
 
     public String getWeekDay() {

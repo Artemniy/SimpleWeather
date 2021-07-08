@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dailyForecastContainer = findViewById(R.id.daily_forecast_container);
         hourlyForecastRecycler = findViewById(R.id.hourly_forecast_recycler);
         hourlyForecastRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        hourlyForecastRecycler.addItemDecoration(new DividerItemDecoration(this, RecyclerView.HORIZONTAL));
         city = findViewById(R.id.city);
         wind = findViewById(R.id.wind);
         visibility = findViewById(R.id.visibility);
@@ -227,8 +225,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View view = getLayoutInflater().inflate(R.layout.item_daily_forecast, dailyForecastContainer, false);
         TextView weekDay = view.findViewById(R.id.week_day);
         ImageView icon = view.findViewById(R.id.weather_icon);
-        TextView temp = view.findViewById(R.id.temp);
-        temp.setText(String.format(getString(R.string.celsius), forecast.getTemp()));
+        TextView min = view.findViewById(R.id.min);
+        TextView max = view.findViewById(R.id.max);
+        min.setText(String.format(getString(R.string.celsius), forecast.getTemp().getMin()));
+        max.setText(String.format(getString(R.string.celsius), forecast.getTemp().getMax()));
         weekDay.setText(forecast.getWeekDay());
         ImageUtil.loadIcon(forecast.getWeather().get(0).getIcon(), icon);
         dailyForecastContainer.addView(view);

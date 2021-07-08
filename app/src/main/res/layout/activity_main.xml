@@ -136,10 +136,10 @@
 
                     <TextView
                         android:id="@+id/humidity"
-                        android:drawablePadding="12dp"
                         style="@style/ShadowedText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawablePadding="12dp"
                         android:textSize="@dimen/text_size_17"
                         app:drawableStartCompat="@drawable/ic_humidity" />
                 </LinearLayout>
@@ -149,7 +149,7 @@
                 android:id="@+id/hourly_forecast_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small" />
+                android:layout_marginTop="@dimen/margin_default" />
 
             <LinearLayout
                 android:id="@+id/daily_forecast_container"

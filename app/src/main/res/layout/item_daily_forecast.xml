@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_forecast_bg"
-    android:paddingHorizontal="10dp"
-    android:paddingVertical="5dp">
+    android:background="@color/forecast_bg_color"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="10dp">
 
     <TextView
         android:id="@+id/week_day"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5" />
+        android:layout_weight="1.5"
+        android:paddingVertical="5dp" />
 
     <ImageView
         android:id="@+id/weather_icon"
@@ -19,9 +20,16 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/temp"
+        android:id="@+id/max"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.6"
+        android:layout_weight="0.5"
+        android:gravity="center" />
+    <TextView
+        android:id="@+id/min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:textColor="#B3F1F1F1"
         android:gravity="center" />
 </LinearLayout>

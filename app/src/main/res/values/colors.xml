@@ -10,4 +10,5 @@
     <color name="hint_color">#F3F2F2</color>
     <color name="shadow_color">#7F000000</color>
     <color name="dark_text_color">#111111</color>
+    <color name="forecast_bg_color">#4ADADADA</color>
 </resources>

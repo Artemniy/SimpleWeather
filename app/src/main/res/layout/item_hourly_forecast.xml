@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="80dp"
+    android:layout_width="60dp"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="3dp"
     android:background="@drawable/item_forecast_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingVertical="5dp">
+    android:paddingVertical="3dp">
 
     <TextView
         android:id="@+id/time"
@@ -17,13 +18,11 @@
     <ImageView
         android:id="@+id/weather_icon"
         android:layout_width="@dimen/hourly_forecast_weather_icon_size"
-        android:layout_height="@dimen/hourly_forecast_weather_icon_size"
-        android:layout_marginTop="@dimen/margin_small" />
+        android:layout_height="@dimen/hourly_forecast_weather_icon_size" />
 
     <TextView
         android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
         android:textSize="@dimen/text_size_14" />
 </LinearLayout>
